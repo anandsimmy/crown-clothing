@@ -10,10 +10,10 @@ class SignUp extends Component {
     constructor(){
         super()
         this.state={
-            displayName: null,
-            email: null,
-            password: null,
-            confirmPassword: null
+            displayName: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
         }
     }
 
@@ -28,10 +28,10 @@ class SignUp extends Component {
             const { user }= await auth.createUserWithEmailAndPassword(email, password)
             await createUserProfileInDB(user, { displayName })
             this.setState({
-                displayName: null,
-                email: null,
-                password: null,
-                confirmPassword: null
+                displayName: '',
+                email: '',
+                password: '',
+                confirmPassword: ''
             })
         }
         catch (error){
