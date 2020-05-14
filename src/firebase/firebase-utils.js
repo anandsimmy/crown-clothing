@@ -6,7 +6,7 @@ import firebaseConfig from './firebase-config'
 
 firebase.initializeApp(firebaseConfig)
 
-export const createUserProfileDocument=async (userAuthObj, additionalData) => {
+export const createUserProfileInDB=async (userAuthObj, additionalData) => {
     
     if(!userAuthObj)
         return;
