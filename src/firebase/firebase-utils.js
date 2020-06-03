@@ -42,7 +42,21 @@ export const addCollectionsAndDocumentsInDB= async (collectionsKey, ObjectsToAdd
 }
 
 export const transformCollectionArray=(snapShotObj)=>{
-
+    //adding two extra properties, id and routeName
+    const transformedArray= snapShotObj.docs.map(doc => {
+        const { title, items }= doc.data()
+        return {
+            id: doc.id,
+            routeName: encodeURI(title.toLowerCase()),
+            title,
+            items
+        }
+    })
+    //converting array to an object
+    return transformedArray.reduce((acc, collection) => {
+        acc[collection.title.toLowerCase()]= collection
+        return acc
+    }, {})
 }
 
 export const auth= firebase.auth()
