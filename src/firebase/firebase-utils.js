@@ -30,6 +30,19 @@ export const createUserProfileInDB=async (userAuthObj, additionalData) => {
     return userDocRef
 }
 
+export const addCollectionsAndDocumentsInDB= async (collectionsKey, ObjectsToAdd) => {
+    const collectionsRef= firestore.collection(collectionsKey)
+    //we are using batch, so as to add all objects to DB as a single batch. Thus the code will be predictable,
+    //because eventhough only one obj fails to add (because of some network issue or something) the whole code fails 
+    //and it returns success only if all the objs has been written into the DB successfully
+    const batch= firestore.batch()
+    ObjectsToAdd.forEach(obj => {
+        const newDocRef= collectionsRef.doc()
+        batch.set(newDocRef, obj)
+    })
+    return await batch.commit()
+}
+
 export const auth= firebase.auth()
 export const firestore= firebase.firestore()
 

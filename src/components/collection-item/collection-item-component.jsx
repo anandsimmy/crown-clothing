@@ -1,8 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import './collection-item-styles.scss'
-
 import {
     CollectionItemContainer,
     CollectionFooterContainer,
@@ -11,6 +9,7 @@ import {
     NameContainer,
     PriceContainer
  } from './collection-item-styles'
+
 import { addItem } from '../../redux/cart/cart-actions'
 
 const CollectionItem=({ item, AddItem}) => {
@@ -22,7 +21,7 @@ const CollectionItem=({ item, AddItem}) => {
             <NameContainer>{name}</NameContainer>
             <PriceContainer>{price}</PriceContainer>
             </CollectionFooterContainer>
-            <AddButton onClick={() => addItem(item)} inverted>
+            <AddButton onClick={() => AddItem(item)} inverted>
                 Add to cart
             </AddButton>
         </CollectionItemContainer>

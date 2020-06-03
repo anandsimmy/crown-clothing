@@ -26,6 +26,7 @@ class App extends Component {
     const { setCurrentUser }= this.props
 
     this.unSubscribeFromAuthListener= auth.onAuthStateChanged(async userAuth => {
+
       if(userAuth){
         const userRef= await createUserProfileInDB(userAuth)
         userRef.onSnapshot(snapShot => {
@@ -34,10 +35,10 @@ class App extends Component {
               ...snapShot.data()
             })
         })
+      } else{
+        setCurrentUser(null) //if there's no user, set currentUser to null
       }
-      else{
-        setCurrentUser(userAuth)
-      }
+
     })
   }
 
