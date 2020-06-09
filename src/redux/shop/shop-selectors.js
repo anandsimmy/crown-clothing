@@ -18,3 +18,8 @@ export const selectCollectionCatgeory= (collectionUrlParam) => (
         collections => collections[collectionUrlParam]
     )
 )
+
+export const selectIsLoadingIndicator= createSelector(
+    [selectShop],
+    shop => shop.isLoading
+)
