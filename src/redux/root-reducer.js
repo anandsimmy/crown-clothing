@@ -17,7 +17,7 @@ const rootReducer= combineReducers({
 const persistConfig= {
     key:'root',
     storage,
-    whitelist: ['cart', 'directory', 'shop']
+    whitelist: [] //user data needs to handled by firebase auth, so not included
 }
 
 export default persistReducer(persistConfig, rootReducer)

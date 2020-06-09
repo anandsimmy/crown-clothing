@@ -19,7 +19,12 @@ export const selectCollectionCatgeory= (collectionUrlParam) => (
     )
 )
 
-export const selectIsLoadingIndicator= createSelector(
+export const selectIsFetching= createSelector(
     [selectShop],
-    shop => shop.isLoading
+    shop => shop.isFetching
+)
+
+export const selectIsComponentDataLoaded= createSelector(
+    [selectShop],
+    shop => !!shop.collections
 )

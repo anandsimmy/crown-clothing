@@ -8,7 +8,7 @@ import CollectionPage from  '../collection/collection-component'
 import withSpinner from '../../components/with-spinner/with-spinner-component'
 
 import { fetchCollectionDataAsyncOperation } from '../../redux/shop/shop-actions'
-import { selectIsLoadingIndicator } from '../../redux/shop/shop-selectors'
+import { selectIsComponentDataLoaded } from '../../redux/shop/shop-selectors'
 
 const CollectionOverviewWithSpinner= withSpinner(CollectionOverview)
 const CollectionPageWithSpinner= withSpinner(CollectionPage)
@@ -21,18 +21,18 @@ class ShopPage extends Component {
 
     render() {
 
-        const { match, isLoading }= this.props
+        const { match, isComponentDataLoaded }= this.props
 
         return(
         <div className='shop-page'>
-            <Route exact path={`${match.path}`} render={(props) => <CollectionOverviewWithSpinner isLoading={isLoading} {...props} />} />
-            <Route path={`${match.path}/:collectionId`} render={(props) => <CollectionPageWithSpinner isLoading={isLoading} {...props} />} />
+            <Route exact path={`${match.path}`} render={(props) => <CollectionOverviewWithSpinner isLoading={!isComponentDataLoaded} {...props} />} />
+            <Route path={`${match.path}/:collectionId`} render={(props) => <CollectionPageWithSpinner isLoading={!isComponentDataLoaded} {...props} />} />
         </div>)
     }
 }
 
 const mapStatetoProps= createStructuredSelector({
-    isLoading: selectIsLoadingIndicator
+    isComponentDataLoaded: selectIsComponentDataLoaded
 })
 
 const mapDispatchToProps=dispatch => ({
