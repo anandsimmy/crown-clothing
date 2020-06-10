@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import CollectionOverview from '../../components/collection-overview/collection-overview-component';
-import CollectionPage from  '../collection/collection-component'
+import CollectionPage from  '../collection-page/collection-page-component'
 import withSpinner from '../../components/with-spinner/with-spinner-component'
 
 import { fetchCollectionDataAsyncOperation } from '../../redux/shop/shop-actions'

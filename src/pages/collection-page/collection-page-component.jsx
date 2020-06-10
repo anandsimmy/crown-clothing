@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import './collection-styles.scss'
+import './collection-page-styles.scss'
 import { selectCollectionCatgeory } from '../../redux/shop/shop-selectors'
 import CollectionItem from '../../components/collection-item/collection-item-component'
 
