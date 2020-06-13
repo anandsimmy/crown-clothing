@@ -1,16 +1,16 @@
 import shopActionTypes from './shop-action-types'
 import { firestore, transformCollectionArray } from '../../firebase/firebase-utils'
 
-const fetchCollectionDataStart= () => ({
+export const fetchCollectionDataStart= () => ({
     type: shopActionTypes.FETCH_COLLECTION_DATA_START
 })
 
-const fetchCollectionDataSuccess =(collectionData) => ({
+export const fetchCollectionDataSuccess =(collectionData) => ({
     type: shopActionTypes.FETCH_COLLECTION_DATA_SUCCESS,
     payload: collectionData
 })
 
-const fetchCollectionDataFailure= (errorMessage) => ({
+export const fetchCollectionDataFailure= (errorMessage) => ({
     type: shopActionTypes.FETCH_COLLECTION_DATA_FAILURE,
     payload: errorMessage
 })
