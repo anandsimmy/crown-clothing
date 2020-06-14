@@ -12,7 +12,7 @@ import CheckOut from './pages/checkout/checkout-component'
 //components
 import Header from './components/header/header-component'
 //firebase-utils
-import { auth, createUserProfileInDB } from './firebase/firebase-utils'
+// import { auth, createUserProfileInDB } from './firebase/firebase-utils'
 //redux-stuff
 import { setCurrentUser } from './redux/user/user-actions'
 import { selectCurrentUser } from './redux/user/user-selectors'
@@ -23,27 +23,27 @@ class App extends Component {
 
   componentDidMount(){
 
-    const { setCurrentUser }= this.props
+    // const { setCurrentUser }= this.props
 
-    this.unSubscribeFromAuthListener= auth.onAuthStateChanged(async userAuth => {
+    // this.unSubscribeFromAuthListener= auth.onAuthStateChanged(async userAuth => {
 
-      if(userAuth){
-        const userRef= await createUserProfileInDB(userAuth)
-        userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-              id: snapShot.id,
-              ...snapShot.data()
-            })
-        })
-      } else{
-        setCurrentUser(null) //if there's no user, set currentUser to null
-      }
+    //   if(userAuth){
+    //     const userRef= await createUserProfileInDB(userAuth)
+    //     userRef.onSnapshot(snapShot => {
+    //       setCurrentUser({
+    //           id: snapShot.id,
+    //           ...snapShot.data()
+    //         })
+    //     })
+    //   } else{
+    //     setCurrentUser(null) //if there's no user, set currentUser to null
+    //   }
 
-    })
+    // })
   }
 
   componentWillUnmount(){
-    this.unSubscribeFromAuthListener()
+    // this.unSubscribeFromAuthListener()
   }
 
   render(){
