@@ -10,6 +10,7 @@ export const createUserProfileInDB=async (userAuthObj, additionalData) => {
     
     if(!userAuthObj)
         return;
+    // debugger
     const userDocRef= firestore.doc(`users/${userAuthObj.uid}`)
     const snapShot= await userDocRef.get()
     if(!snapShot.exists){
@@ -62,7 +63,7 @@ export const transformCollectionArray=(snapShotObj)=>{
 export const auth= firebase.auth()
 export const firestore= firebase.firestore()
 
-const googleProvider= new firebase.auth.GoogleAuthProvider()
+export const googleProvider= new firebase.auth.GoogleAuthProvider()
 googleProvider.setCustomParameters({ prompt: 'select_account' })
 export const signInWithGoogle= () => auth.signInWithPopup(googleProvider)
 
