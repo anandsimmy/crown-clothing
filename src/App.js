@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from "react-redux";
 import { createStructuredSelector } from 'reselect'
@@ -11,41 +11,10 @@ import SignInSignUp from './pages/signin-and-signup/signin-and-signup-component'
 import CheckOut from './pages/checkout/checkout-component'
 //components
 import Header from './components/header/header-component'
-//firebase-utils
 //redux-stuff
 import { selectCurrentUser } from './redux/user/user-selectors'
 
-class App extends Component {
-
-  unSubscribeFromAuthListener= null
-
-  componentDidMount(){
-
-    // const { setCurrentUser }= this.props
-
-    // this.unSubscribeFromAuthListener= auth.onAuthStateChanged(async userAuth => {
-
-    //   if(userAuth){
-    //     const userRef= await createUserProfileInDB(userAuth)
-    //     userRef.onSnapshot(snapShot => {
-    //       setCurrentUser({
-    //           id: snapShot.id,
-    //           ...snapShot.data()
-    //         })
-    //     })
-    //   } else{
-    //     setCurrentUser(null) //if there's no user, set currentUser to null
-    //   }
-
-    // })
-  }
-
-  componentWillUnmount(){
-    // this.unSubscribeFromAuthListener()
-  }
-
-  render(){
-    return (
+const App=(props) => (
       <div>
         <Header />
         <Switch>
@@ -53,14 +22,11 @@ class App extends Component {
           <Route path='/shop' component={Shop} />
           <Route path='/checkout' component={CheckOut} />
           <Route path='/signin' render={
-            () => this.props.currentUser ? <Redirect to='/' /> : <SignInSignUp />
+            () => props.currentUser ? <Redirect to='/' /> : <SignInSignUp />
           } />
         </Switch>
       </div>
-    );
-  }
-
-}
+  )
 
 const mapStateToProps= createStructuredSelector({
   currentUser: selectCurrentUser
