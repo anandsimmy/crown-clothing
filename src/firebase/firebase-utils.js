@@ -10,7 +10,8 @@ export const createUserProfileInDB=async (userAuthObj, additionalData) => {
     
     if(!userAuthObj)
         return;
-    // debugger
+    //if debugger is enabled google sign-in is working. need to debug more into google sign-in bug
+    //debugger
     const userDocRef= firestore.doc(`users/${userAuthObj.uid}`)
     const snapShot= await userDocRef.get()
     if(!snapShot.exists){

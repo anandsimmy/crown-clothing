@@ -8,7 +8,8 @@ const FormInput=({ label, handleChange, ...props }) => {
             <input className='form-input' onChange={handleChange} {...props}/>
             {
                 label ?
-                <label className={`${props.value.length ? 'shrink' : 'shrink'} form-input-label`}>
+                //put null in shrinks place (second shrink) if label upword movement effect needs to work on input focus
+                <label className={`${props.value.length ? 'shrink' : 'shrink'} form-input-label`}> 
                     {label}
                 </label>
                 : null
