@@ -3,11 +3,16 @@ import { takeLatest, put, call, all } from 'redux-saga/effects'
 import { auth, googleProvider, getCurrentUser, createUserProfileInDB } from '../../firebase/firebase-utils'
 
 import userActionTypes from './user-action-types'
-import { signInSuccess, signInFailure, signOutSuccess, signOutFailure } from './user-actions'
+import { signInSuccess,
+         signInFailure,
+         signUpSuccess,
+         signUpFailure,
+         signOutSuccess,
+         signOutFailure } from './user-actions'
 
-export function* snapShotFromDB(userAuth){
+export function* snapShotFromDB(userAuth, additionalData){
     try{
-        const userRef= yield createUserProfileInDB(userAuth)
+        const userRef= yield createUserProfileInDB(userAuth, additionalData)
         const userSnapshot= yield userRef.get()
         yield put(signInSuccess({
             id: userSnapshot.id,
@@ -18,7 +23,7 @@ export function* snapShotFromDB(userAuth){
     }
 }
 
-export function* isUserAuthenticated(){
+export function* isUserAlreadySignedIn(){
     try{
         const userAuth= yield getCurrentUser()
         if(!userAuth)
@@ -48,7 +53,7 @@ export function* emailSignIn({payload: {email, password}}){
     }
 }
 
-export function* signOutStart(){
+export function* signOut(){
     try{
         yield auth.signOut()
         yield put(signOutSuccess())
@@ -57,9 +62,20 @@ export function* signOutStart(){
     }
 }
 
+export function* signUp({ payload: { displayName, email, password }}){
+    try{
+        console.log(email, password)
+        const { user }= yield auth.createUserWithEmailAndPassword(email, password)
+        yield put(signUpSuccess())
+        yield snapShotFromDB(user, {displayName})
+    }catch(error){
+        yield put(signUpFailure(error))
+    }
+}
+
 //listeners
 export function* onCheckUserSession(){
-    yield takeLatest(userActionTypes.CHECK_USER_SESSION, isUserAuthenticated)
+    yield takeLatest(userActionTypes.CHECK_USER_SESSION, isUserAlreadySignedIn)
 }
 
 export function* onGoogleSignInStart(){
@@ -71,7 +87,11 @@ export function* onEmailSignInStart(){
 }
 
 export function* onSignOutStart(){
-    yield takeLatest(userActionTypes.SIGN_OUT_START, signOutStart)
+    yield takeLatest(userActionTypes.SIGN_OUT_START, signOut)
+}
+
+export function* onSignUpStart(){
+    yield takeLatest(userActionTypes.SIGN_UP_START, signUp)
 }
 
 export function* userSagas(){
@@ -79,7 +99,8 @@ export function* userSagas(){
         call(onGoogleSignInStart), 
         call(onEmailSignInStart), 
         call(onCheckUserSession),
-        call(onSignOutStart)
+        call(onSignOutStart),
+        call(onSignUpStart)
     ])
 }
 
