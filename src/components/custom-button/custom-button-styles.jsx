@@ -26,7 +26,7 @@ const googleSignInStyles= css`
 const invertedStyles= css`
     background-color: white;
     color: black;
-    border: 1px solid whitesmoke;
+    border: 1px solid grey;
 
     &:hover {
     background-color: black;

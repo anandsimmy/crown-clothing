@@ -26,7 +26,7 @@ export const createUserProfileInDB=async (userAuthObj, additionalData) => {
             })
         }
         catch (error) {
-            console.log('error creating user', error.message)
+            console.log('error creating user in db', error.message)
         }
     }
     return userDocRef
