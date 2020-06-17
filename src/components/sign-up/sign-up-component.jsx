@@ -29,8 +29,8 @@ class SignUp extends Component {
             alert('passwords donot match')
             return;
         }
-        console.log('sign-up', email, password)
-        signUpStart({ displayName, email, password })
+        signUpStart({ displayName, email, password }) //dispatching signup action
+
         this.setState({
                     displayName: '',
                     email: '',
