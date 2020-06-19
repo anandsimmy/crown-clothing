@@ -15,11 +15,11 @@ import Header from './components/header/header-component'
 import { selectCurrentUser } from './redux/user/user-selectors'
 import { checkUserSession } from './redux/user/user-actions'
 
-const App=({ checkUserSession }) => {
+const App=({ checkUserSession, currentUser }) => {
 
   useEffect(()=>{
     checkUserSession()
-  })
+  }, [checkUserSession])
 
   return(
     <div>
@@ -29,7 +29,7 @@ const App=({ checkUserSession }) => {
         <Route path='/shop' component={Shop} />
         <Route path='/checkout' component={CheckOut} />
         <Route path='/signin' render={
-          () => this.props.currentUser ? <Redirect to='/' /> : <SignInSignUp />
+          () => currentUser ? <Redirect to='/' /> : <SignInSignUp />
         } />
       </Switch>
     </div>
