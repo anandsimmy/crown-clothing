@@ -49,3 +49,4 @@ yarn-error.log*
 /client/yarn-debug.log*
 /client/yarn-error.log*
 # src/firebase/firebase-config.js
+node_modules
