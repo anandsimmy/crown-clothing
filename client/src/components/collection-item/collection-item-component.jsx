@@ -10,7 +10,7 @@ import {
     PriceContainer
  } from './collection-item-styles'
 
-import { addItem } from '../../redux/cart/cart-actions'
+import { addItemToAllCarts } from '../../redux/cart/cart-actions'
 
 const CollectionItem=({ item, AddItem}) => {
     const { name, price, imageUrl }= item
@@ -29,7 +29,7 @@ const CollectionItem=({ item, AddItem}) => {
 }
 
 const mapDispatchToProps= dispatch => ({
-    AddItem: item => dispatch(addItem(item))
+    AddItem: item => dispatch(addItemToAllCarts(item))
 })
 
 export default connect(null, mapDispatchToProps)(CollectionItem)
