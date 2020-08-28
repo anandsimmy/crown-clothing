@@ -1,8 +1,9 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
-
 import firebaseConfig from './firebase-config'
+
+import { addItemToCart, decrementItemQuantity } from '../redux/cart/cart-utils'
 
 firebase.initializeApp(firebaseConfig)
 
@@ -22,6 +23,7 @@ export const createUserProfileInDB=async (userAuthObj, additionalData) => {
                 displayName,
                 email,
                 createdAt,
+                cartItems: [],
                 ...additionalData
             })
         }
@@ -31,6 +33,25 @@ export const createUserProfileInDB=async (userAuthObj, additionalData) => {
     }
     return userDocRef
 }
+
+export const addItemsToOnlineUserCart= async (payload) => {
+    const userAuthObj= await getCurrentUser()
+    if(!userAuthObj)
+        return
+    const userDocRef= firestore.doc(`users/${userAuthObj.uid}`)
+    const snapShot= await userDocRef.get()
+    const userData= snapShot.data()
+    const updatedCart= addItemToCart(userData.cartItems, payload)
+    try{
+        userDocRef.update({
+            cartItems: updatedCart
+        })
+    }
+    catch (error) {
+        console.log('error adding item to online cart', error.message)
+    }
+}
+
 
 export const addCollectionsAndDocumentsInDB= async (collectionsKey, ObjectsToAdd) => {
     const collectionsRef= firestore.collection(collectionsKey)
