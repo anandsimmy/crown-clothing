@@ -30,7 +30,9 @@ export function* subtractItemInAllCarts({ payload }){
 }
 
 export function* restoreUserCart(){
-    const savedCartItems= yield getSavedCartItems()
+    let savedCartItems= yield getSavedCartItems()
+    if(savedCartItems==undefined || savedCartItems==null)
+        savedCartItems= []
     yield put(restoreCart(savedCartItems))
 }
 
