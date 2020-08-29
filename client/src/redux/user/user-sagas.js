@@ -2,6 +2,7 @@ import { takeLatest, put, call, all } from 'redux-saga/effects'
 
 import { auth, googleProvider, getCurrentUser, createUserProfileInDB } from '../../firebase/firebase-utils'
 
+import { startRestoreUserCart } from '../cart/cart-actions'
 import userActionTypes from './user-action-types'
 import { signInSuccess,
          signInFailure,
@@ -18,6 +19,7 @@ export function* snapShotFromDB(userAuth, additionalData){
             id: userSnapshot.id,
             ...userSnapshot.data()
         }))
+        yield put(startRestoreUserCart())
     }catch(error){
         yield put(signInFailure(error))
     }
