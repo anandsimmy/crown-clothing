@@ -18,15 +18,20 @@ const cartReducer=(state= initalState, action) => {
                 ...state,
                 cartItems: addItemToCart(state.cartItems, action.payload)
             }
+        case cartActionTypes.DECREMENT_ITEM_QUANTITY:
+            return {
+                ...state,
+                cartItems: decrementItemQuantity(state.cartItems, action.payload)
+            }
         case cartActionTypes.CLEAR_ITEM:
             return {
                 ...state,
                 cartItems: state.cartItems.filter(cartItem => cartItem.id !== action.payload.id)
             }
-        case cartActionTypes.DECREMENT_ITEM_QUANTITY:
+        case cartActionTypes.RESTORE_USER_CART:
             return {
                 ...state,
-                cartItems: decrementItemQuantity(state.cartItems, action.payload)
+                cartItems: action.payload
             }
         case cartActionTypes.CLEAR_CART:
             return {
