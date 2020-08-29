@@ -7,6 +7,9 @@ import { addItemToCart, decrementItemQuantity } from '../redux/cart/cart-utils'
 
 firebase.initializeApp(firebaseConfig)
 
+export const auth= firebase.auth()
+export const firestore= firebase.firestore()
+
 export const createUserProfileInDB=async (userAuthObj, additionalData) => {
     
     if(!userAuthObj)
@@ -34,7 +37,7 @@ export const createUserProfileInDB=async (userAuthObj, additionalData) => {
     return userDocRef
 }
 
-export const addItemsToOnlineUserCart= async (payload) => {
+export const addItemInOnlineCart= async (payload) => {
     const userAuthObj= await getCurrentUser()
     if(!userAuthObj)
         return
@@ -52,6 +55,52 @@ export const addItemsToOnlineUserCart= async (payload) => {
     }
 }
 
+export const subtractItemInOnlineCart= async (payload) => {
+    const userAuthObj= await getCurrentUser()
+    if(!userAuthObj)
+        return
+    const userDocRef= firestore.doc(`users/${userAuthObj.uid}`)
+    const snapShot= await userDocRef.get()
+    const userData= snapShot.data()
+    const updatedCart= decrementItemQuantity(userData.cartItems, payload)
+    try{
+        userDocRef.update({
+            cartItems: updatedCart
+        })
+    }
+    catch (error) {
+        console.log('error adding item to online cart', error.message)
+    }
+}
+
+export const clearItemInOnlineCart= async (payload) => {
+    const userAuthObj= await getCurrentUser()
+    if(!userAuthObj)
+        return
+    const userDocRef= firestore.doc(`users/${userAuthObj.uid}`)
+    const snapShot= await userDocRef.get()
+    const userData= snapShot.data()
+    const updatedCart= userData.cartItems.filter(cartItem => cartItem.id !== payload.id)
+    try{
+        await userDocRef.update({
+            cartItems: updatedCart
+        })
+    }
+    catch (error) {
+        console.log('error adding item to online cart', error.message)
+    }
+}
+
+export const getSavedCartItems= async() => {
+    const userAuthObj= await getCurrentUser()
+    if(!userAuthObj)
+        return
+    const userDocRef= firestore.doc(`users/${userAuthObj.uid}`)
+    const snapShot= await userDocRef.get()
+    const userData= snapShot.data()
+    const savedCartItems= userData.cartItems
+    return savedCartItems
+}
 
 export const addCollectionsAndDocumentsInDB= async (collectionsKey, ObjectsToAdd) => {
     const collectionsRef= firestore.collection(collectionsKey)
@@ -81,9 +130,6 @@ export const transformCollectionArray=(snapShotObj)=>{
         return acc
     }, {})
 }
-
-export const auth= firebase.auth()
-export const firestore= firebase.firestore()
 
 export const getCurrentUser=() => {
     return new Promise((resolve, reject)=>{
