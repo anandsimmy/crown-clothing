@@ -1,17 +1,17 @@
 import { all, call, takeLatest, takeEvery, put } from 'redux-saga/effects'
 
-import { addItemsToOnlineUserCart } from '../../firebase/firebase-utils'
+import { addItemInOnlineCart, subtractItemInOnlineCart, clearItemInOnlineCart, getSavedCartItems } from '../../firebase/firebase-utils'
 import userActionTypes from '../user/user-action-types'
 import cartActionTypes from './cart-action-types'
-import { clearCart, addItem } from './cart-actions'
+import { addItem, subtractItem, clearItem, clearCart, restoreCart } from './cart-actions'
 
 export function* clearShopCart(){
     yield put(clearCart())
 }
 
-export function* addItemToAllCarts({ payload }){
+export function* addItemInAllCarts({ payload }){
     try {
-        yield addItemsToOnlineUserCart(payload)
+        yield addItemInOnlineCart(payload)
         yield put(addItem(payload))
     }
     catch{
@@ -19,8 +19,47 @@ export function* addItemToAllCarts({ payload }){
     }
 }
 
-export function* onAddItemToAllCarts(){
-    yield takeEvery(cartActionTypes.ADD_ITEM_TO_ALL_CARTS, addItemToAllCarts)
+export function* subtractItemInAllCarts({ payload }){
+    try {
+        yield subtractItemInOnlineCart(payload)
+        yield put(subtractItem(payload))
+    }
+    catch{
+        console.log('error when subtracting item')
+    }
+}
+
+export function* restoreUserCart(){
+    const savedCartItems= yield getSavedCartItems()
+    yield put(restoreCart(savedCartItems))
+}
+
+export function* clearItemInAllCarts({ payload }){
+    try {
+        yield clearItemInOnlineCart(payload)
+        yield put(clearItem(payload))
+    }
+    catch{
+        console.log('error when clearing item')
+    }
+}
+
+
+//listeners
+export function* onAddItemInAllCarts(){
+    yield takeEvery(cartActionTypes.ADD_ITEM_IN_ALL_CARTS, addItemInAllCarts)
+}
+
+export function* onSubtractItemInAllCarts(){
+    yield takeEvery(cartActionTypes.SUBTRACT_ITEM_IN_ALL_CARTS, subtractItemInAllCarts)
+}
+
+export function* onClearItemInAllCarts(){
+    yield takeLatest(cartActionTypes.CLEAR_ITEM_IN_ALL_CARTS, clearItemInAllCarts)
+}
+
+export function* onStartRestoreUserCart(){
+    yield takeLatest(cartActionTypes.START_RESTORE_USER_CART, restoreUserCart)
 }
 
 export function* onClearCart(){
@@ -29,7 +68,10 @@ export function* onClearCart(){
 
 export function* cartSagas(){
     yield all([
-        call(onClearCart),
-        call(onAddItemToAllCarts)
+        call(onAddItemInAllCarts),
+        call(onSubtractItemInAllCarts),
+        call(onClearItemInAllCarts),
+        call(onStartRestoreUserCart),
+        call(onClearCart)
     ])
 }
